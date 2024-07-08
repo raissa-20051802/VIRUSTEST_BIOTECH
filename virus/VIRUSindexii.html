@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VIRUSTEST</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff;
+            color: #333;
+            background-image: url('https://i.pinimg.com/564x/c4/94/f2/c494f26637d0c2b7b036cf4360b4ef50.jpg');
+            background-size: cover;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 15px;
+        }
+        h1 {
+            color: #ff4500;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        .question {
+            background-color: #fff;
+            border: 2px solid #ff4500;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .btn {
+            background-color: #ff4500;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .btn:hover {
+            background-color: #ff6347;
+        }
+        .option {
+            display: block;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>VIRUSTEST</h1>
+        <div id="intro">
+            <h2>Bienvenido a VIRUSTEST</h2>
+            <p>Este juego te desafía a poner a prueba tus conocimientos sobre virus. Responderás 10 preguntas seleccionadas aleatoriamente de nuestro banco de preguntas. Cada pregunta tiene 4 opciones, de las cuales solo una es correcta. Al final, recibirás tu calificación y podrás ver las respuestas correctas de las preguntas que hayas fallado. ¡Buena suerte!</p>
+            <button id="startBtn" class="btn">Comenzar el juego</button>
+        </div>
+        <div id="game" style="display: none;">
+            <!-- Aquí se mostrarán las preguntas -->
+        </div>
+        <div id="results" style="display: none;">
+            <!-- Aquí se mostrarán los resultados -->
+        </div>
+    </div>
+    <script>
+        const questionBank = [
+            {
+                question: "¿Qué es un virus?",
+                options: ["Un organismo unicelular", "Un agente infeccioso submicroscópico", "Una bacteria", "Un tipo de hongo"],
+                correctAnswer: 1
+            },
+            {
+                question: "¿Cuál de los siguientes NO es un virus?",
+                options: ["VIH", "Influenza", "E. coli", "Hepatitis B"],
+                correctAnswer: 2
+            },
+            {
+                question: "¿Qué tipo de material genético pueden contener los virus?",
+                options: ["Solo ADN", "Solo ARN", "ADN o ARN", "Ni ADN ni ARN"],
+                correctAnswer: 2
+            },
+            {
+                question: "¿Cómo se llama la capa protectora de un virus?",
+                options: ["Membrana celular", "Cápside", "Núcleo", "Citoplasma"],
+                correctAnswer: 1
+            },
+            {
+                question: "¿Qué es un virión?",
+                options: ["Una célula infectada por un virus", "Una partícula viral completa", "Un tipo de bacteria", "Un anticuerpo antiviral"],
+                correctAnswer: 1
+            },
+            {
+                question: "¿Cuál es el virus más pequeño conocido?",
+                options: ["Parvovirus", "Coronavirus", "Virus de la influenza", "Virus del Ébola"],
+                correctAnswer: 0
+            },
+            {
+                question: "¿Qué es un retrovirus?",
+                options: ["Un virus que solo infecta bacterias", "Un virus que convierte su ARN en ADN", "Un virus que no causa enfermedades", "Un virus que solo afecta a las plantas"],
+                correctAnswer: 1
+            },
+            {
+                question: "¿Cuál de los siguientes es un ejemplo de enfermedad causada por priones?",
+                options: ["Gripe", "Malaria", "Enfermedad de Creutzfeldt-Jakob", "Tuberculosis"],
+                correctAnswer: 2
+            },
+            {
+                question: "¿Qué es la carga viral?",
+                options: ["El número de virus en una muestra", "El peso de un virus", "La velocidad de replicación viral", "El número de síntomas causados por un virus"],
+                correctAnswer: 0
+            },
+            {
+                question: "¿Cuál es la función principal de la envoltura viral?",
+                options: ["Replicación del material genético", "Protección contra el sistema inmune", "Síntesis de proteínas", "Digestión celular"],
+                correctAnswer: 1
+            },
+            {
+                question: "¿Qué es un bacteriófago?",
+                options: ["Un virus que infecta bacterias", "Una bacteria que come virus", "Un tipo de antibiótico", "Un componente del sistema inmune"],
+                correctAnswer: 0
+            },
+            {
+                question: "¿Cuál de los siguientes NO es un método de transmisión viral?",
+                options: ["Aire", "Agua", "Contacto directo", "Fotosíntesis"],
+                correctAnswer: 3
+            },
+            {
+                question: "¿Qué es la latencia viral?",
+                options: ["El tiempo que tarda un virus en causar síntomas", "Un período en el que el virus está inactivo en el huésped", "La velocidad de mutación viral", "El tiempo de vida de un virus fuera del huésped"],
+                correctAnswer: 1
+            },
+            {
+                question: "¿Cuál es el propósito principal de un virus?",
+                options: ["Causar enfermedades", "Replicarse", "Fortalecer el sistema inmune", "Producir energía"],
+                correctAnswer: 1
+            },
+            {
+                question: "¿Qué es un viroplasma?",
+                options: ["Un tipo de vacuna", "Una estructura celular donde se ensamblan los virus", "Un virus gigante", "Un tipo de antibiótico antiviral"],
+                correctAnswer: 1
+            },
+            {
+                question: "¿Cuál de los siguientes NO es un componente común de los virus?",
+                options: ["Cápside", "Material genético", "Envoltura", "Ribosomas"],
+                correctAnswer: 3
+            },
+            {
+                question: "¿Qué es la virulencia?",
+                options: ["La capacidad de un virus para causar enfermedad", "La velocidad de replicación viral", "El número de huéspedes que puede infectar un virus", "La resistencia de un virus a los medicamentos"],
+                correctAnswer: 0
+            },
+            {
+                question: "¿Cuál es la diferencia principal entre virus y viroides?",
+                options: ["Los viroides son más grandes", "Los virus tienen proteínas, los viroides no", "Los viroides solo infectan animales", "No hay diferencia, son lo mismo"],
+                correctAnswer: 1
+            },
+            {
+                question: "¿Qué es un virus emergente?",
+                options: ["Un virus recién descubierto", "Un virus que ha mutado", "Un virus que causa una nueva epidemia", "Todas las anteriores"],
+                correctAnswer: 3
+            },
+            {
+                question: "¿Cuál de los siguientes NO es un tipo de vacuna antiviral?",
+                options: ["Vacuna de virus vivo atenuado", "Vacuna de virus inactivado", "Vacuna de subunidades", "Vacuna de virus amplificado"],
+                correctAnswer: 3
+            },
+            {
+                question: "¿Qué es la recombinación genética en virus?",
+                options: ["La mutación espontánea del genoma viral", "El intercambio de material genético entre virus", "La duplicación del genoma viral", "La eliminación de genes virales"],
+                correctAnswer: 1
+            },
+            {
+                question: "¿Cuál es la función de las glicoproteínas en la superficie de algunos virus?",
+                options: ["Proteger el material genético", "Ayudar en la replicación", "Facilitar la entrada a las células huésped", "Producir energía para el virus"],
+                correctAnswer: 2
+            },
+            {
+                question: "¿Qué es un reservorio viral?",
+                options: ["Un lugar donde se almacenan virus en un laboratorio", "Una población o entorno donde persiste un virus", "Un órgano del cuerpo donde se acumulan los virus", "Un tipo de vacuna"],
+                correctAnswer: 1
+            },
+            {
+                question: "¿Cuál de las siguientes NO es una forma de virus?",
+                options: ["Helicoidal", "Icosaédrica", "Envuelta", "Cúbica"],
+                correctAnswer: 3
+            },
+            {
+                question: "¿Qué es la carga viral?",
+                options: ["El peso total de los virus en un organismo", "La cantidad de virus en la sangre o en otro fluido corporal", "El número de células infectadas por un virus", "La velocidad de replicación viral"],
+                correctAnswer: 1
+            },
+            {
+                question: "¿Cuál de los siguientes NO es un método común para diagnosticar infecciones virales?",
+                options: ["PCR", "Cultivo viral", "Microscopía electrónica", "Radiografía"],
+                correctAnswer: 3
+            },
+            {
+                question: "¿Qué es un epítopo viral?",
+                options: ["Una parte del virus que el sistema inmune reconoce", "El punto de entrada del virus a la célula", "El centro de replicación viral en la célula", "Un tipo de mutación viral"],
+                correctAnswer: 0
+            },
+            {
+                question: "¿Cuál de los siguientes es un ejemplo de virus de ARN?",
+                options: ["Virus de la viruela", "Virus de la hepatitis B", "Virus de la influenza", "Virus del papiloma humano"],
+                correctAnswer: 2
+            },
+            {
+                question: "¿Qué es la interferencia viral?",
+                options: ["Un método de diagnóstico viral", "La capacidad de un virus para bloquear la infección por otros virus", "Un tipo de mutación viral", "La resistencia a antivirales"],
+                correctAnswer: 1
+            },
+            {
+                question: "¿Cuál es el propósito principal de los antivíricos?",
+                options: ["Matar los virus", "Prevenir la replicación viral", "Fortalecer el sistema inmune", "Reparar el daño celular"],
+                correctAnswer: 1
+            }
+        ];
+
+        let currentQuestions = [];
+        let currentQuestionIndex = 0;
+        let score = 0;
+
+        const introDiv = document.getElementById('intro');
+        const gameDiv = document.getElementById('game');
+        const resultsDiv = document.getElementById('results');
+        const startBtn = document.getElementById('startBtn');
+
+        startBtn.addEventListener('click', startGame);
+
+        function startGame() {
+            introDiv.style.display = 'none';
+            gameDiv.style.display = 'block';
+            currentQuestions = getRandomQuestions(10);
+            showQuestion();
+        }
+
+        function getRandomQuestions(num) {
+            const shuffled = [...questionBank].sort(() => 0.5 - Math.random());
+            return shuffled.slice(0, num);
+        }
+
+        function showQuestion() {
+            if (currentQuestionIndex < currentQuestions.length) {
+                const question = currentQuestions[currentQuestionIndex];
+                let html = `<div class="question">
+                    <h3>Pregunta ${currentQuestionIndex + 1}:</h3>
+                    <p>${question.question}</p>`;
+                
+                question.options.forEach((option, index) => {
+                    html += `<label class="option">
+                        <input type="radio" name="answer" value="${index}">
+                        ${option}
+                    </label>`;
+                });
+
+                html += `<button class="btn" onclick="checkAnswer()">Siguiente</button></div>`;
+                gameDiv.innerHTML = html;
+            } else {
+                showResults();
+            }
+        }
+
+        function checkAnswer() {
+            const selectedAnswer = document.querySelector('input[name="answer"]:checked');
+            if (selectedAnswer) {
+                const answerIndex = parseInt(selectedAnswer.value);
+                if (answerIndex === currentQuestions[currentQuestionIndex].correctAnswer) {
+                    score++;
+                }
+                currentQuestionIndex++;
+                showQuestion();
+            } else {
+                alert("Por favor, selecciona una respuesta.");
+            }
+        }
+
+        function showResults() {
+            gameDiv.style.display = 'none';
+            resultsDiv.style.display = 'block';
+            let html = `<h2>Resultados</h2>
+                <p>Tu puntuación: ${score} de ${currentQuestions.length}</p>
+                <h3>Respuestas correctas:</h3>`;
+
+            currentQuestions.forEach((question, index) => {
+                const userAnswer = document.querySelector(`input[name="answer"]:checked`);
+                const isCorrect = userAnswer && parseInt(userAnswer.value) === question.correctAnswer;
+                
+                html += `<p><strong>Pregunta ${index + 1}:</strong> ${question.question}<br>
+                    Respuesta correcta: ${question.options[question.correctAnswer]}<br>
+                    ${isCorrect ? '<span style="color: green;">¡Correcto!</span>' : '<span style="color: red;">Incorrecto</span>'}
+                </p>`;
+            });
+
+            html += `<button class="btn" onclick="location.reload()">Jugar de nuevo</button>`;
+            resultsDiv.innerHTML = html;
+        }
+    </script>
+</body>
+</html>
